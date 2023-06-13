@@ -4,15 +4,15 @@
 
 
 module reg_file (
-    clk,  // clock
-    rst,  // reset
-    we,  // write enable
-    Rw,  // register write address
-    Ra,  // register read address (A)
-    Rb,  // register read address B
-    busW,  // write data bus
-    busA,  // read data bus (A)
-    busB  // read data bus (B)
+    clk,
+    rst,
+    we,
+    Rw,
+    Ra,
+    Rb,
+    busW,
+    busA,
+    busB
 );
 
   input clk;  // clock
@@ -25,7 +25,7 @@ module reg_file (
   output [31:0] busA;  // read data bus (A)
   output [31:0] busB;  // read data bus (B)
 
-  reg [31:0] reges[31:0];  // 32 * 32-bit registers
+  reg [31:0] reges[31:0];  // 32x32-bit registers
   integer i = 0;  // loop counter
 
   always @(posedge clk) begin

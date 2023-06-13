@@ -1,3 +1,25 @@
 {
-  "cSpell.words": ["addi", "andi", "dout", "Funct", "shamt", "slti", "xori"]
+  "cSpell.words": [
+    "addi",
+    "addiu",
+    "addu",
+    "andi",
+    "bgez",
+    "bgtz",
+    "blez",
+    "bltz",
+    "dout",
+    "Funct",
+    "jalr",
+    "Memto",
+    "shamt",
+    "sllv",
+    "slti",
+    "sltiu",
+    "sltu",
+    "srav",
+    "srlv",
+    "subu",
+    "xori"
+  ]
 }
