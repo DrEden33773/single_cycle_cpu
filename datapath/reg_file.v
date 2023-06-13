@@ -1,14 +1,12 @@
 /*
-
-RegFile := Register File
-
+  RegFile := Register File
 */
 
 
 module reg_file (
     clk,  // clock
     rst,  // reset
-    wEn,  // write enable
+    we,  // write enable
     Rw,  // register write address
     Ra,  // register read address (A)
     Rb,  // register read address B
@@ -19,7 +17,7 @@ module reg_file (
 
   input clk;  // clock
   input rst;  // reset
-  input wEn;  // write enable
+  input we;  // write enable
   input [4:0] Rw;  // register write address
   input [4:0] Ra;  // register read address (A)
   input [4:0] Rb;  // register read address (B)
@@ -35,7 +33,7 @@ module reg_file (
       for (i = 0; i < 32; i = i + 1) begin
         reges[i] <= 0;
       end
-    end else if (wEn) begin
+    end else if (we) begin
       reges[Rw] <= busW;
     end
   end

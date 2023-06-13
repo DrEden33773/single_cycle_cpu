@@ -4,6 +4,32 @@
 
 An implementation of `single-cycle-CPU` based on `LoonArch_32bit_MIPS_Primary` instruction set.
 
+## Basic Knowledge
+
+### Construction of Instructions
+
+In `MIPS`, length of all instructions is `32 bits`.
+
+Instructions are divided into three types: `R-type`, `I-type` and `J-type`.
+
+- R-type
+
+| 31-26 | 25-21 | 20-16 | 15-11 | 10-6 | 5-0 |
+| ----- | ----- | ----- | ----- | ---- | --- |
+| opcode | rs | rt | rd | shamt | funct |
+
+- I-type
+
+| 31-26 | 25-21 | 20-16 | 15-0 |
+| ----- | ----- | ----- | ---- |
+| opcode | rs | rt | imm |
+
+- J-type
+
+| 31-26 | 25-0 |
+| ----- | ---- |
+| opcode | imm |
+
 ## Instructions
 
 ### R-type

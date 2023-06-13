@@ -1,7 +1,5 @@
 /*
-
-DM := Data Memory
-
+  DM := Data Memory
 */
 
 module dm_4k (

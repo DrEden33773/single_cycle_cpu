@@ -1,7 +1,5 @@
 /*
-
-PC := Program Counter
-
+  PC := Program Counter
 */
 
 

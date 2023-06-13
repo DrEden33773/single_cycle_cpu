@@ -1,7 +1,5 @@
 /*
-
-IM := Instructions Memory
-
+  IM := Instructions Memory
 */
 
 

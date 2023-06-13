@@ -1,7 +1,5 @@
 /*
-
-ALU := Algebraic Logic Unit
-
+  ALU := Algebraic Logic Unit
 */
 
 
