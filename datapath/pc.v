@@ -10,12 +10,17 @@ module pc (
     npc
 );
 
-  input clk;  // clock
-  input rst;  // reset
-  input [31:0] pc;  // 32-bit PC
-  output [31:0] npc;  // 32-bit next PC
+  /* clock */
+  input clk;
+  /* reset */
+  input rst;
+  /* 32-bit PC */
+  input [31:0] pc;
+  /* 32-bit next_PC */
+  output [31:0] npc;
 
-  reg [31:0] npc_reg;  // 32-bit next PC register
+  /* 32-bit next_PC register */
+  reg [31:0] npc_reg;
 
   always @(posedge clk) begin
     if (rst) begin

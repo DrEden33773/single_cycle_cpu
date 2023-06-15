@@ -15,18 +15,29 @@ module reg_file (
     busB
 );
 
-  input clk;  // clock
-  input rst;  // reset
-  input we;  // write enable
-  input [4:0] Rw;  // register write address
-  input [4:0] Ra;  // register read address (A)
-  input [4:0] Rb;  // register read address (B)
-  input [31:0] busW;  // write data bus
-  output [31:0] busA;  // read data bus (A)
-  output [31:0] busB;  // read data bus (B)
+  /* clock */
+  input clk;
+  /* reset */
+  input rst;
+  /* write enable */
+  input we;
+  /* write addr */
+  input [4:0] Rw;
+  /* read addr A */
+  input [4:0] Ra;
+  /* read addr B */
+  input [4:0] Rb;
+  /* write data (from write addr) */
+  input [31:0] busW;
+  /* read data A (from read addr A) */
+  output [31:0] busA;
+  /* read data B (from read addr B) */
+  output [31:0] busB;
 
-  reg [31:0] reges[31:0];  // 32x32-bit registers
-  integer i = 0;  // loop counter
+  /* 32-bit * 32-bit registers  */
+  reg [31:0] reges[31:0];
+  /* loop counter */
+  integer i = 0;
 
   always @(posedge clk) begin
     if (rst) begin

@@ -8,16 +8,20 @@ module im_4k (
     dout
 );
 
+  /* address bus */
   input [11:2] addr;  // address bus
+  /* 32-bit memory output */
   output [31:0] dout;  // 32-bit memory output
 
-  reg [31:0] im[1023:0];  // 32-bit * 1024-word
+  /* instructions memory */
+  reg [31:0] im[1023:0];
 
-
+  // load all instructions
   initial begin
-    $readmemh("im_4k.mem", im);
+    $readmemh("../code.txt", im);
   end
 
+  // pick the instruction at `addr`
   assign dout = im[addr];
 
 endmodule
