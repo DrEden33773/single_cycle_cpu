@@ -6,7 +6,7 @@
 module reg_file (
     clk,
     rst,
-    we,
+    RegWr,
     Rw,
     Ra,
     Rb,
@@ -20,7 +20,7 @@ module reg_file (
   /* reset */
   input rst;
   /* write enable */
-  input we;
+  input RegWr;
   /* write addr */
   input [4:0] Rw;
   /* read addr A */
@@ -34,18 +34,21 @@ module reg_file (
   /* read data B (from read addr B) */
   output [31:0] busB;
 
-  /* 32-bit * 32-bit registers  */
+  /* 32 * 32-bit registers  */
   reg [31:0] reges[31:0];
   /* loop counter */
   integer i = 0;
 
-  always @(posedge clk) begin
+  always @(posedge rst) begin
     if (rst) begin
-      for (i = 0; i < 32; i = i + 1) begin
-        reges[i] <= 0;
-      end
-    end else if (we) begin
+      for (i = 0; i < 32; i = i + 1) reges[i] <= 0;
+    end
+  end
+
+  always @(posedge clk) begin
+    if (RegWr) begin
       reges[Rw] <= busW;
+      reges[0]  <= 0;
     end
   end
 

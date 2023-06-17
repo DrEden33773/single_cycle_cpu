@@ -9,11 +9,11 @@ module im_4k (
 );
 
   /* address bus */
-  input [11:2] addr;  // address bus
+  input [11:2] addr;
   /* 32-bit memory output */
-  output [31:0] dout;  // 32-bit memory output
+  output [31:0] dout;
 
-  /* instructions memory */
+  /* 1024 * 32-bit instructions memory */
   reg [31:0] im[1023:0];
 
   // load all instructions

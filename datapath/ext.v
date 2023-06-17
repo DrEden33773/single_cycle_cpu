@@ -42,7 +42,7 @@ module ext_any_to_32 #(
       /* default case */
       default: ext_out_reg = {32{imm[IMM_WIDTH-1]}};
       /* zero extend */
-      2'b00:   ext_out_reg = {'b0, imm};
+      2'b00:   ext_out_reg = {0, imm};
       /* sign extend */
       2'b01:   ext_out_reg = {{(32 - IMM_WIDTH) {imm[IMM_WIDTH-1]}}, imm};
     endcase
