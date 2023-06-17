@@ -74,14 +74,14 @@ $$
 | srlv        | 000000 | 000110 | `$rd = zExt($rt) >> $rs` |
 | srav        | 000000 | 000111 | `$rd = sExt($rt) >> $rs` |
 | jr          | 000000 | 001000 | `PC = $rs` |
-| jalr (rd = 31)        | 000000 | 001001 | `$31 = (PC + 4) + 4; PC = $rs` |
+| jalr (rd = 31)       | 000000 | 001001 | `$31 = (PC + 4) + 4; PC = $rs` |
 
 ### I-type
 
 | Instruction | Opcode | Description |
 | ----------- | ------ | ----------- |
-| bgez        | 000001 (rt=1) | `if ($rs >= 0) PC = PC + 4 + sExt(imm) << 2` |
-| bltz        | 000001 (rt=0) | `if ($rs < 0) PC = PC + 4 + sExt(imm) << 2` |
+| bgez        | 000001 (rt = 1) | `if ($rs >= 0) PC = PC + 4 + sExt(imm) << 2` |
+| bltz        | 000001 (rt = 0) | `if ($rs < 0) PC = PC + 4 + sExt(imm) << 2` |
 | addiu       | 001001 | `$rt = $rs + sExt(imm)` |
 | slti        | 001010 | `$rt = (sExt($rs) < sExt(imm)) ? 1 : 0` |
 | sltiu       | 001011 | `$rt = (zExt($rs) < sExt(imm)) ? 1 : 0` |
@@ -108,18 +108,18 @@ $$
 
 ## Control Signals
 
-| Signal | Description |
-| ------ | ----------- |
-| RegDst | 1: rd = rt; 0: rd = rd |
-| ALUSrc | 1: ALU second operand = sign-extended immediate; 0: ALU second operand = rt |
+| Signal   | Description |
+| ------   | ----------- |
+| RegDst   | 1: rd = rt; 0: rd = rd |
+| ALUSrc   | 1: ALU second operand = sign-extended immediate; 0: ALU second operand = rt |
 | MemtoReg | 1: write the value in memory to register; 0: write the value in ALU to register |
 | RegWrite | 1: write the value to register; 0: do not write the value to register |
-| MemRead | 1: read the value from memory; 0: do not read the value from memory |
+| MemRead  | 1: read the value from memory; 0: do not read the value from memory |
 | MemWrite | 1: write the value to memory; 0: do not write the value to memory |
-| Branch | 1: branch; 0: do not branch |
-| ALUOp | 00: add; 01: sub; 10: and; 11: or |
-| Jump | 1: jump; 0: do not jump |
-| JumpReg | 1: jump to register; 0: jump to immediate |
+| Branch   | 1: branch; 0: do not branch |
+| ALUOp    | 00: add; 01: sub; 10: and; 11: or |
+| Jump     | 1: jump; 0: do not jump |
+| JumpReg  | 1: jump to register; 0: jump to immediate |
 
 ## Pipeline
 
