@@ -103,33 +103,46 @@ $$
 
 | Instruction | Opcode | Description |
 | ----------- | ------ | ----------- |
-| j           | 000010 | `B_PC = PC + 4; PC = {B_PC[31:28], imm << 2}` |
-| jal         | 000011 | `B_PC = PC + 4; PC = {B_PC[31:28], imm << 2}; $31 = B_PC + 4` |
+| j           | 000010 | `PC = {(PC + 4)[31:28], imm << 2}` |
+| jal         | 000011 | `PC = {(PC + 4)[31:28], imm << 2}; $31 = (PC + 4) + 4` |
 
 ## Control Signals
+
+### 0-1 Signals
 
 | Signal   | Description |
 | ------   | ----------- |
 | RegWr    | 1: write to reg, 0: won't write to reg |
 | ALUSrc   | 1: ALU.src := imm, 0: ALU.src := reg |
-| RegDst   | 1: rd = rt, 0: rd = rd |
+| RegDst   | 1: rd <- rt, 0: rd <- rd |
 | MemToReg | 1: reg <- MEM\[ALU.out\], 0: reg <- ALU.out |
 | MemWr    | 1: MEM\[ALU.out\] <- rt, 0: won't write to MEM |
 | Branch   | 1: PC <- PC + 4 + sExt(imm) << 2, 0: won't branch |
 | Jump     | 1: PC <- {B_PC\[31:28\], imm << 2}, 0: won't jump |
+| Link     | 1: $31 <- PC + 4, 0: won't link |
 | ExtOp    | 1: sExt, 0: zExt |
-| ALUOp    | 000: add, 001: sub, 010: and, 011: or, 100: xor, 101: shift-l, 110: shift-r, 111: not |
 | RType    | 1: R-type, 0: not R-type |
 
-## Export `Control Signals` from `Instructions' structures`
+### 4-bit ALUOp
 
-| Instruction | RegWr | ALUSrc | RegDst | MemToReg | MemWr | Branch | Jump | ExtOp | ALUOp | RType |
-| ----------- | ----- | ------ | ------ | -------- | ----- | ------ | ---- | ----- | ----- | ----- |
-| addu/i      | 1     | 0      | 1      | 0        | 0     | 0      | 0    | 0/1   | 000   | 1     |
-| subu/i      | 1     | 0      | 1      | 0        | 0     | 0      | 0    | 0/1   | 001   | 1     |
-| and         | 1     | 0      | 1      | 0        | 0     | 0      | 0    | 0     | 010   | 1     |
-| or          | 1     | 0      | 1      | 0        | 0     | 0      | 0    | 0     | 011   | 1     |
-| xor         | 1     | 0      | 1      | 0        | 0     | 0      | 0    | 0     | 100   | 1     |
+| ALUOp | Description |
+| ----- | ----------- |
+| 0000  | out <- in1 + in2 |
+| 0001  | out <- in1 - in2 |
+| 0010  | out <- in1 & in2 |
+| 0011  | out <- in1 \| in2 |
+| 0100  | out <- in1 ^ in2 |
+| 0101  | out <- in1 << in2 |
+| 0110  | out <- in1 >> in2 |
+| 0111  | out <- ~(in1 \| in2) |
+| 1000  | out <- in1 < in2 |
+| 1001  | out <- in1 <= in2 |
+| 1010  | out <- in1 == in2 |
+| 1011  | out <- in1 != in2 |
+| 1100  | out <- in1 > in2 |
+| 1101  | out <- in1 >= in2 |
+
+## Export `Control Signals` from `Instructions' structures`
 
 ## Pipeline
 
