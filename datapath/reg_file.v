@@ -39,14 +39,10 @@ module reg_file (
   /* loop counter */
   integer i = 0;
 
-  always @(posedge rst) begin
+  always @(posedge clk) begin
     if (rst) begin
       for (i = 0; i < 32; i = i + 1) reges[i] <= 0;
-    end
-  end
-
-  always @(posedge clk) begin
-    if (RegWr) begin
+    end else if (RegWr) begin
       reges[Rw] <= busW;
       reges[0]  <= 0;
     end

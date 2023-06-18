@@ -142,9 +142,16 @@ $$
 | 1100  | out <- in1 > in2 |
 | 1101  | out <- in1 >= in2 |
 
-## Export `Control Signals` from `Instructions' structures`
+## Export `Control Signal` from `Instruction's Structure`
 
-## Pipeline
+| Instruction | RegWr | ALUSrc | RegDst | MemToReg | MemWr | Branch | Jump | Link | ExtOp | RType | ALUOp |
+| ----------- | ----- | ------ | ------ | -------- | ----- | ------ | ---- | ---- | ----- | ----- | ----- |
+| add         | 1     | 0      | 1      | 0        | 0     | 0      | 0    | 0    | 0     | 1     | 0000  |
+| addu        | 1     | 0      | 1      | 0        | 0     | 0      | 0    | 0    | 0     | 1     | 0000  |
+| addi        | 1     | 1      | 0      | 0        | 0     | 0      | 0    | 0    | 1     | 0     | 0000  |
+| addiu       | 1     | 1      | 0      | 0        | 0     | 0      | 0    | 0    | 1     | 0     | 0000  |
+
+## Next Project => Pipeline CPU
 
 ### IF
 
