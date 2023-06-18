@@ -53,9 +53,9 @@ Dex(imm_\text{J}) \in \begin{cases}
 \end{cases}
 $$
 
-## Basic Instructions
+## Basic Instructions (B_PC = PC + 4)
 
-### R-type
+### R-type Inst
 
 | Instruction | Opcode | Funct  | Description |
 | ----------- | ------ | -----  | ----------- |
@@ -74,14 +74,14 @@ $$
 | srlv        | 000000 | 000110 | `$rd = zExt($rt) >> $rs` |
 | srav        | 000000 | 000111 | `$rd = sExt($rt) >> $rs` |
 | jr          | 000000 | 001000 | `PC = $rs` |
-| jalr (rd = 31)       | 000000 | 001001 | `$31 = (PC + 4) + 4; PC = $rs` |
+| jalr (rd = 31)       | 000000 | 001001 | `$31 = B_PC + 4; PC = $rs` |
 
-### I-type
+### I-type Inst
 
 | Instruction | Opcode | Description |
 | ----------- | ------ | ----------- |
-| bgez        | 000001 (rt = 1) | `if ($rs >= 0) PC = PC + 4 + sExt(imm) << 2` |
-| bltz        | 000001 (rt = 0) | `if ($rs < 0) PC = PC + 4 + sExt(imm) << 2` |
+| bgez        | 000001 (rt = 1) | `if ($rs >= 0) PC = B_PC + sExt(imm) << 2` |
+| bltz        | 000001 (rt = 0) | `if ($rs < 0) PC = B_PC + sExt(imm) << 2` |
 | addiu       | 001001 | `$rt = $rs + sExt(imm)` |
 | slti        | 001010 | `$rt = (sExt($rs) < sExt(imm)) ? 1 : 0` |
 | sltiu       | 001011 | `$rt = (zExt($rs) < sExt(imm)) ? 1 : 0` |
@@ -89,24 +89,24 @@ $$
 | ori         | 001101 | `$rt = $rs \| zExt(imm)` |
 | xori        | 001110 | `$rt = $rs ^ zExt(imm)` |
 | lui         | 001111 | `$rt = imm << 16` |
-| beq         | 000100 | `if ($rs == $rt) PC = PC + 4 + sExt(imm) << 2` |
-| bne         | 000101 | `if ($rs != $rt) PC = PC + 4 + sExt(imm) << 2` |
-| blez        | 000110 | `if ($rs <= 0) PC = PC + 4 + sExt(imm) << 2` |
-| bgtz        | 000111 | `if ($rs > 0) PC = PC + 4 + sExt(imm) << 2` |
+| beq         | 000100 | `if ($rs == $rt) PC = B_PC + sExt(imm) << 2` |
+| bne         | 000101 | `if ($rs != $rt) PC = B_PC + sExt(imm) << 2` |
+| blez        | 000110 | `if ($rs <= 0) PC = B_PC + sExt(imm) << 2` |
+| bgtz        | 000111 | `if ($rs > 0) PC = B_PC + sExt(imm) << 2` |
 | lb          | 100000 | `$rt = sExt(MEM[$rs + sExt(imm)])` |
 | lbu         | 100100 | `$rt = zExt(MEM[$rs + sExt(imm)])` |
 | sb          | 101000 | `MEM[$rs + sExt(imm)] = $rt` |
 | lw          | 100011 | `$rt = MEM[$rs + sExt(imm)]` |
 | sw          | 101011 | `MEM[$rs + sExt(imm)] = $rt` |
 
-### J-type
+### J-type Inst
 
 | Instruction | Opcode | Description |
 | ----------- | ------ | ----------- |
-| j           | 000010 | `PC = {(PC + 4)[31:28], imm << 2}` |
-| jal         | 000011 | `PC = {(PC + 4)[31:28], imm << 2}; $31 = (PC + 4) + 4` |
+| j           | 000010 | `PC = {B_PC[31:28], imm << 2}` |
+| jal         | 000011 | `PC = {B_PC[31:28], imm << 2}; $31 = B_PC + 4` |
 
-## Control Signals
+## Control Signals (B_PC = PC + 4)
 
 ### 0-1 Signals
 
@@ -114,12 +114,12 @@ $$
 | ------   | ----------- |
 | RegWr    | 1: write to reg, 0: won't write to reg |
 | ALUSrc   | 1: ALU.src := imm, 0: ALU.src := reg |
-| RegDst   | 1: rd <- rt, 0: rd <- rd |
+| RegDst   | 1: rd <- rd, 0: rd <- rt |
 | MemToReg | 1: reg <- MEM\[ALU.out\], 0: reg <- ALU.out |
 | MemWr    | 1: MEM\[ALU.out\] <- rt, 0: won't write to MEM |
-| Branch   | 1: PC <- PC + 4 + sExt(imm) << 2, 0: won't branch |
+| Branch   | 1: PC <- B_PC + sExt(imm) << 2, 0: won't branch |
 | Jump     | 1: PC <- {B_PC\[31:28\], imm << 2}, 0: won't jump |
-| Link     | 1: $31 <- PC + 4, 0: won't link |
+| Link     | 1: $31 <- B_PC + 4, 0: won't link |
 | ExtOp    | 1: sExt, 0: zExt |
 | RType    | 1: R-type, 0: not R-type |
 
@@ -137,19 +137,63 @@ $$
 | 0111  | out <- ~(in1 \| in2) |
 | 1000  | out <- in1 < in2 |
 | 1001  | out <- in1 <= in2 |
-| 1010  | out <- in1 == in2 |
-| 1011  | out <- in1 != in2 |
+| 1010  | out <- in1 != in2 |
+| 1011  | out <- in1 == in2 |
 | 1100  | out <- in1 > in2 |
 | 1101  | out <- in1 >= in2 |
 
 ## Export `Control Signal` from `Instruction's Structure`
 
+### R-type Ctrl
+
 | Instruction | RegWr | ALUSrc | RegDst | MemToReg | MemWr | Branch | Jump | Link | ExtOp | RType | ALUOp |
 | ----------- | ----- | ------ | ------ | -------- | ----- | ------ | ---- | ---- | ----- | ----- | ----- |
-| add         | 1     | 0      | 1      | 0        | 0     | 0      | 0    | 0    | 0     | 1     | 0000  |
 | addu        | 1     | 0      | 1      | 0        | 0     | 0      | 0    | 0    | 0     | 1     | 0000  |
-| addi        | 1     | 1      | 0      | 0        | 0     | 0      | 0    | 0    | 1     | 0     | 0000  |
-| addiu       | 1     | 1      | 0      | 0        | 0     | 0      | 0    | 0    | 1     | 0     | 0000  |
+| subu        | 1     | 0      | 1      | 0        | 0     | 0      | 0    | 0    | 0     | 1     | 0001  |
+| and         | 1     | 0      | 1      | 0        | 0     | 0      | 0    | 0    | 0     | 1     | 0010  |
+| or          | 1     | 0      | 1      | 0        | 0     | 0      | 0    | 0    | 0     | 1     | 0011  |
+| xor         | 1     | 0      | 1      | 0        | 0     | 0      | 0    | 0    | 0     | 1     | 0100  |
+| nor         | 1     | 0      | 1      | 0        | 0     | 0      | 0    | 0    | 0     | 1     | 0111  |
+| slt         | 1     | 0      | 1      | 0        | 0     | 0      | 0    | 0    | 1     | 1     | 1000  |
+| sltu        | 1     | 0      | 1      | 0        | 0     | 0      | 0    | 0    | 0     | 1     | 1000  |
+| sll         | 1     | 1      | 1      | 0        | 0     | 0      | 0    | 0    | 0     | 1     | 0101  |
+| srl         | 1     | 1      | 1      | 0        | 0     | 0      | 0    | 0    | 0     | 1     | 0110  |
+| sra         | 1     | 1      | 1      | 0        | 0     | 0      | 0    | 0    | 1     | 1     | 0110  |
+| sllv        | 1     | 0      | 1      | 0        | 0     | 0      | 0    | 0    | 0     | 1     | 0101  |
+| srlv        | 1     | 0      | 1      | 0        | 0     | 0      | 0    | 0    | 0     | 1     | 0110  |
+| srav        | 1     | 0      | 1      | 0        | 0     | 0      | 0    | 0    | 1     | 1     | 0110  |
+| jr          | 0     | x      | x      | 0        | 0     | 0      | 1    | 0    | 0     | 1     | xxxx  |
+| jalr        | 1     | x      | x      | 0        | 0     | 0      | 1    | 1    | 0     | 1     | xxxx  |
+
+### I-type Ctrl
+
+| Instruction | RegWr | ALUSrc | RegDst | MemToReg | MemWr | Branch | Jump | Link | ExtOp | RType | ALUOp |
+| ----------- | ----- | ------ | ------ | -------- | ----- | ------ | ---- | ---- | ----- | ----- | ----- |
+| bgez        | 0     | 1      | x      | 0        | 0     | 1      | 0    | 0    | 1     | 0     | 1101  |
+| bltz        | 0     | 1      | x      | 0        | 0     | 1      | 0    | 0    | 1     | 0     | 1000  |
+| addiu       | 1     | 1      | 0      | 0        | 0     | 0      | 0    | 0    | 0     | 0     | 0000  |
+| slti        | 1     | 1      | 0      | 0        | 0     | 0      | 0    | 0    | 1     | 0     | 1000  |
+| sltiu       | 1     | 1      | 0      | 0        | 0     | 0      | 0    | 0    | 0     | 0     | 1000  |
+| andi        | 1     | 1      | 0      | 0        | 0     | 0      | 0    | 0    | 0     | 0     | 0010  |
+| ori         | 1     | 1      | 0      | 0        | 0     | 0      | 0    | 0    | 0     | 0     | 0011  |
+| xori        | 1     | 1      | 0      | 0        | 0     | 0      | 0    | 0    | 0     | 0     | 0100  |
+| lui         | 1     | x      | 0      | 0        | 0     | 0      | 0    | 0    | x     | 0     | xxxx  |
+| beq         | 0     | 0      | x      | 0        | 0     | 1      | 0    | 0    | 1     | 0     | 1011  |
+| bne         | 0     | 0      | x      | 0        | 0     | 1      | 0    | 0    | 1     | 0     | 1010  |
+| blez        | 0     | 1      | x      | 0        | 0     | 1      | 0    | 0    | 1     | 0     | 1001  |
+| bgtz        | 0     | 1      | x      | 0        | 0     | 1      | 0    | 0    | 1     | 0     | 1100  |
+| lb          | 1     | 1      | x      | 1        | 0     | 0      | 0    | 0    | 1     | 0     | 0000  |
+| lbu         | 1     | 1      | x      | 1        | 0     | 0      | 0    | 0    | 0     | 0     | 0000  |
+| sb          | 0     | 1      | x      | x        | 1     | 0      | 0    | 0    | 1     | 0     | 0000  |
+| lw          | 1     | 1      | x      | 1        | 0     | 0      | 0    | 0    | 1     | 0     | 0000  |
+| sw          | 0     | 1      | x      | x        | 1     | 0      | 0    | 0    | 1     | 0     | 0000  |
+
+### J-type Ctrl
+
+| Instruction | RegWr | ALUSrc | RegDst | MemToReg | MemWr | Branch | Jump | Link | ExtOp | RType | ALUOp |
+| ----------- | ----- | ------ | ------ | -------- | ----- | ------ | ---- | ---- | ----- | ----- | ----- |
+| j           | 0     | x      | x      | 0        | 0     | 0      | 1    | 0    | x     | 0     | xxxx  |
+| jal         | 0     | x      | x      | 0        | 0     | 0      | 1    | 1    | x     | 0     | xxxx  |
 
 ## Next Project => Pipeline CPU
 
