@@ -1,7 +1,5 @@
 /*
-
-ctrl := Control Unit
-
+  ctrl := Control Unit
 */
 
 

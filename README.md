@@ -110,16 +110,26 @@ $$
 
 | Signal   | Description |
 | ------   | ----------- |
-| RegDst   | 1: rd = rt; 0: rd = rd |
-| ALUSrc   | 1: ALU second operand = sign-extended immediate; 0: ALU second operand = rt |
-| MemtoReg | 1: write the value in memory to register; 0: write the value in ALU to register |
-| RegWrite | 1: write the value to register; 0: do not write the value to register |
-| MemRead  | 1: read the value from memory; 0: do not read the value from memory |
-| MemWrite | 1: write the value to memory; 0: do not write the value to memory |
-| Branch   | 1: branch; 0: do not branch |
-| ALUOp    | 00: add; 01: sub; 10: and; 11: or |
-| Jump     | 1: jump; 0: do not jump |
-| JumpReg  | 1: jump to register; 0: jump to immediate |
+| RegWr    | 1: write to reg, 0: won't write to reg |
+| ALUSrc   | 1: ALU.src := imm, 0: ALU.src := reg |
+| RegDst   | 1: rd = rt, 0: rd = rd |
+| MemToReg | 1: reg <- MEM\[ALU.out\], 0: reg <- ALU.out |
+| MemWr    | 1: MEM\[ALU.out\] <- rt, 0: won't write to MEM |
+| Branch   | 1: PC <- PC + 4 + sExt(imm) << 2, 0: won't branch |
+| Jump     | 1: PC <- {B_PC\[31:28\], imm << 2}, 0: won't jump |
+| ExtOp    | 1: sExt, 0: zExt |
+| ALUOp    | 000: add, 001: sub, 010: and, 011: or, 100: xor, 101: shift-l, 110: shift-r, 111: not |
+| RType    | 1: R-type, 0: not R-type |
+
+## Export `Control Signals` from `Instructions' structures`
+
+| Instruction | RegWr | ALUSrc | RegDst | MemToReg | MemWr | Branch | Jump | ExtOp | ALUOp | RType |
+| ----------- | ----- | ------ | ------ | -------- | ----- | ------ | ---- | ----- | ----- | ----- |
+| addu/i      | 1     | 0      | 1      | 0        | 0     | 0      | 0    | 0/1   | 000   | 1     |
+| subu/i      | 1     | 0      | 1      | 0        | 0     | 0      | 0    | 0/1   | 001   | 1     |
+| and         | 1     | 0      | 1      | 0        | 0     | 0      | 0    | 0     | 010   | 1     |
+| or          | 1     | 0      | 1      | 0        | 0     | 0      | 0    | 0     | 011   | 1     |
+| xor         | 1     | 0      | 1      | 0        | 0     | 0      | 0    | 0     | 100   | 1     |
 
 ## Pipeline
 
