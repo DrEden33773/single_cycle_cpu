@@ -1,6 +1,6 @@
 /*
   Splitter := Split `Instruction`
-    => [[Attention:]]
+    => [[Attention]]:
       => This module will split `Instruction` in all possible ways.
 */
 
