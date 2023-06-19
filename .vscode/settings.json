@@ -8,6 +8,7 @@
     "bgtz",
     "blez",
     "bltz",
+    "bxxxx",
     "dout",
     "Funct",
     "jalr",
