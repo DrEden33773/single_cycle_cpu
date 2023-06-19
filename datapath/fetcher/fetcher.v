@@ -51,4 +51,7 @@ module fetcher (
       .dout(instruction)
   );
 
+  // >>> Update(PC)
+  assign PC = NextPC;
+
 endmodule
