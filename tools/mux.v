@@ -5,8 +5,8 @@
 
 /* 2_select_1_mux = mux2_1 */
 module mux2_1 (
-    input [31:0] a,  /* `0` */
-    input [31:0] b,  /* `1` */
+    input [31:0] zero,  /* `0` */
+    input [31:0] one,  /* `1` */
     input sel,
     output reg [31:0] out
 );
@@ -14,8 +14,8 @@ module mux2_1 (
   always @(*) begin
     case (sel)
       default: out = 0;
-      1'b0: out = a;
-      1'b1: out = b;
+      1'b0: out = zero;
+      1'b1: out = one;
     endcase
   end
 
@@ -23,10 +23,10 @@ endmodule
 
 /* 4_select_1_mux = mux4_1 */
 module mux4_1 (
-    input [31:0] a,  /* `0` */
-    input [31:0] b,  /* `1` */
-    input [31:0] c,  /* `2` */
-    input [31:0] d,  /* `3` */
+    input [31:0] zero,  /* `0` */
+    input [31:0] one,  /* `1` */
+    input [31:0] two,  /* `2` */
+    input [31:0] three,  /* `3` */
     input [1:0] sel,
     output reg [31:0] out
 );
@@ -34,10 +34,10 @@ module mux4_1 (
   always @(*) begin
     case (sel)
       default: out = 0;
-      2'b00:   out = a;
-      2'b01:   out = b;
-      2'b10:   out = c;
-      2'b11:   out = d;
+      2'b00:   out = zero;
+      2'b01:   out = one;
+      2'b10:   out = two;
+      2'b11:   out = three;
     endcase
   end
 
@@ -45,9 +45,9 @@ endmodule
 
 /* 3_select_1_mux = mux3_1 (inherit from `mux4_1`) */
 module mux3_1 (
-    input [31:0] a,  /* `0` */
-    input [31:0] b,  /* `1` */
-    input [31:0] c,  /* `2` */
+    input [31:0] zero,  /* `0` */
+    input [31:0] one,  /* `1` */
+    input [31:0] two,  /* `2` */
     input [1:0] sel,
     output reg [31:0] out
 );
@@ -55,9 +55,9 @@ module mux3_1 (
   always @(*) begin
     case (sel)
       default: out = 0;
-      2'b00:   out = a;
-      2'b01:   out = b;
-      2'b10:   out = c;
+      2'b00:   out = zero;
+      2'b01:   out = one;
+      2'b10:   out = two;
     endcase
   end
 

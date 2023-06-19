@@ -13,10 +13,11 @@
   | 0111  | out <- ~(in1 \| in2) |
   | 1000  | out <- in1 < in2 |
   | 1001  | out <- in1 <= in2 |
-  | 1010  | out <- in1 == in2 |
-  | 1011  | out <- in1 != in2 |
+  | 1010  | out <- in1 != in2 |
+  | 1011  | out <- in1 == in2 |
   | 1100  | out <- in1 > in2 |
   | 1101  | out <- in1 >= in2 |
+  | 1110  | out <- in1 >>> in2 |
 */
 
 
@@ -24,7 +25,7 @@ module alu (
     input  [31:0] a,
     input  [31:0] b,
     input  [ 3:0] ALUOp,
-    output [31:0] alu_out
+    output [31:0] ALUOut
 );
 
   parameter ADD = 4'b0000;
@@ -41,6 +42,7 @@ module alu (
   parameter SNE = 4'b1011;
   parameter SGT = 4'b1100;
   parameter SGE = 4'b1101;
+  parameter SRA = 4'b1110;
 
   reg [31:0] out_reg;
 
@@ -61,9 +63,10 @@ module alu (
       SNE: out_reg = (a != b) ? 1 : 0;
       SGT: out_reg = (a > b) ? 1 : 0;
       SGE: out_reg = (a >= b) ? 1 : 0;
+      SRA: out_reg = a >>> b;
     endcase
   end
 
-  assign alu_out = out_reg;
+  assign ALUOut = out_reg;
 
 endmodule

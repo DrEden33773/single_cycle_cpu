@@ -6,7 +6,7 @@
 module ext_16_to_32 (
     input [15:0] imm16,
     input ExtOp,
-    output [31:0] ext_out
+    output [31:0] ExtOut
 );
 
   reg [31:0] ext_out_reg;
@@ -22,17 +22,14 @@ module ext_16_to_32 (
     endcase
   end
 
-  assign ext_out = ext_out_reg;
+  assign ExtOut = ext_out_reg;
 
 endmodule
 
-
-module ext_any_to_32 #(
-    parameter IMM_WIDTH = 16
-) (
-    input [IMM_WIDTH-1:0] imm,
+module ext_16_to_30 (
+    input [15:0] imm16,
     input ExtOp,
-    output [31:0] ext_out
+    output [31:0] ExtOut
 );
 
   reg [31:0] ext_out_reg;
@@ -40,14 +37,14 @@ module ext_any_to_32 #(
   always @(*) begin
     case (ExtOp)
       /* default case */
-      default: ext_out_reg = {32{imm[IMM_WIDTH-1]}};
+      default: ext_out_reg = {30{imm16[15]}};
       /* zero extend */
-      0: ext_out_reg = {0, imm};
+      0: ext_out_reg = {14'b0, imm16};
       /* sign extend */
-      1: ext_out_reg = {{(32 - IMM_WIDTH) {imm[IMM_WIDTH-1]}}, imm};
+      1: ext_out_reg = {{14{imm16[15]}}, imm16};
     endcase
   end
 
-  assign ext_out = ext_out_reg;
+  assign ExtOut = ext_out_reg;
 
-endmodule  //name
+endmodule
