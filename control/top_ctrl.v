@@ -8,6 +8,8 @@
 */
 
 
+`include "../tools/logic_expr.v"
+`include "../tools/mux.v"
 module top_ctrl (
     input [31:0] instruction,
     output RegWr,
@@ -20,6 +22,8 @@ module top_ctrl (
     output Link,
     output ExtOp,
     output RType,
+    output JType,
+    output IType,
     output [3:0] ALUOp
 );
 
@@ -29,8 +33,8 @@ module top_ctrl (
 
   // >>> Judge(Type)
   assign RType = (opcode == 6'b000000) && (funct != 6'b000000);
-  wire JType = (opcode == 6'b000010) || (opcode == 6'b000011);
-  wire IType = ~RType && ~JType;
+  assign JType = (opcode == 6'b000010) || (opcode == 6'b000011);
+  assign IType = ~RType && ~JType;
 
   // >>> RouteTo(SubCtrl)
   always @(instruction) begin

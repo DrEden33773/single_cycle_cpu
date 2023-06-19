@@ -4,35 +4,25 @@
 
 
 module reg_file (
-    clk,
-    rst,
-    RegWr,
-    Rw,
-    Ra,
-    Rb,
-    busW,
-    busA,
-    busB
+    /* clock */
+    input clk,
+    /* reset */
+    input rst,
+    /* write enable */
+    input RegWr,
+    /* write addr */
+    input [4:0] Rw,
+    /* read addr A */
+    input [4:0] Ra,
+    /* read addr B */
+    input [4:0] Rb,
+    /* write data (from write addr) */
+    input [31:0] busW,
+    /* read data A (from read addr A) */
+    output [31:0] busA,
+    /* read data B (from read addr B) */
+    output [31:0] busB
 );
-
-  /* clock */
-  input clk;
-  /* reset */
-  input rst;
-  /* write enable */
-  input RegWr;
-  /* write addr */
-  input [4:0] Rw;
-  /* read addr A */
-  input [4:0] Ra;
-  /* read addr B */
-  input [4:0] Rb;
-  /* write data (from write addr) */
-  input [31:0] busW;
-  /* read data A (from read addr A) */
-  output [31:0] busA;
-  /* read data B (from read addr B) */
-  output [31:0] busB;
 
   /* 32 * 32-bit registers  */
   reg [31:0] reges[31:0];
@@ -44,7 +34,7 @@ module reg_file (
       for (i = 0; i < 32; i = i + 1) reges[i] <= 0;
     end else if (RegWr) begin
       reges[Rw] <= busW;
-      reges[0]  <= 0;
+      reges[0]  <= 0;  // `$zero` should always be `0` [[not_writeable]]
     end
   end
 
