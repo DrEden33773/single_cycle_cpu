@@ -35,9 +35,13 @@ Instructions are divided into three types: `R-type`, `I-type` and `J-type`.
 
 ### Numeric Ranges
 
-$$ Dex(rs), Dex(rt), Dex(rd) \in [0, 2^{5} - 1] $$
+$$
+Dex(rs), Dex(rt), Dex(rd) \in [0, 2^{5} - 1]
+$$
 
-$$ Dex(shamt) \in [0, 2^{5} - 1] $$
+$$
+Dex(shamt) \in [0, 2^{5} - 1]
+$$
 
 $$
 Dex(imm_\text{I}) \in \begin{cases}

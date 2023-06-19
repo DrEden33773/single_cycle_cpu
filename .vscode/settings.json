@@ -9,6 +9,7 @@
     "blez",
     "bltz",
     "bxxxx",
+    "datapath",
     "dout",
     "Funct",
     "jalr",

@@ -22,6 +22,6 @@ module im_4k (
   end
 
   // pick the instruction at `addr`
-  assign dout = im[addr];
+  assign dout = im[addr[11:2]];
 
 endmodule
