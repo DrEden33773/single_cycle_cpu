@@ -8,9 +8,6 @@
 */
 
 
-`include "r_sub_ctrl.v"
-`include "i_sub_ctrl.v"
-`include "j_sub_ctrl.v"
 module top_ctrl (
     input [31:0] instruction,
     output RegWr,
