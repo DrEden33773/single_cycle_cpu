@@ -21,6 +21,23 @@
 */
 
 
+`define ADD 4'b0000;
+`define SUB 4'b0001;
+`define AND 4'b0010;
+`define OR 4'b0011;
+`define XOR 4'b0100;
+`define SLL 4'b0101;
+`define SRL 4'b0110;
+`define NOR 4'b0111;
+`define SLT 4'b1000;
+`define SLE 4'b1001;
+`define SEQ 4'b1010;
+`define SNE 4'b1011;
+`define SGT 4'b1100;
+`define SGE 4'b1101;
+`define SRA 4'b1110;
+
+
 module alu (
     input  [31:0] a,
     input  [31:0] b,
@@ -28,42 +45,26 @@ module alu (
     output [31:0] ALUOut
 );
 
-  parameter ADD = 4'b0000;
-  parameter SUB = 4'b0001;
-  parameter AND = 4'b0010;
-  parameter OR = 4'b0011;
-  parameter XOR = 4'b0100;
-  parameter SLL = 4'b0101;
-  parameter SRL = 4'b0110;
-  parameter NOR = 4'b0111;
-  parameter SLT = 4'b1000;
-  parameter SLE = 4'b1001;
-  parameter SEQ = 4'b1010;
-  parameter SNE = 4'b1011;
-  parameter SGT = 4'b1100;
-  parameter SGE = 4'b1101;
-  parameter SRA = 4'b1110;
-
   reg [31:0] out_reg;
 
   always @(*) begin
     case (ALUOp)
       default: out_reg = 0;
-      ADD: out_reg = a + b;
-      SUB: out_reg = a - b;
-      AND: out_reg = a & b;
-      OR: out_reg = a | b;
-      XOR: out_reg = a ^ b;
-      SLL: out_reg = a << b;
-      SRL: out_reg = a >> b;
-      NOR: out_reg = ~(a | b);
-      SLT: out_reg = (a < b) ? 1 : 0;
-      SLE: out_reg = (a <= b) ? 1 : 0;
-      SEQ: out_reg = (a == b) ? 1 : 0;
-      SNE: out_reg = (a != b) ? 1 : 0;
-      SGT: out_reg = (a > b) ? 1 : 0;
-      SGE: out_reg = (a >= b) ? 1 : 0;
-      SRA: out_reg = a >>> b;
+      alu.ADD: out_reg = a + b;
+      alu.SUB: out_reg = a - b;
+      alu.AND: out_reg = a & b;
+      alu.OR:  out_reg = a | b;
+      alu.XOR: out_reg = a ^ b;
+      alu.SLL: out_reg = a << b;
+      alu.SRL: out_reg = a >> b;
+      alu.NOR: out_reg = ~(a | b);
+      alu.SLT: out_reg = (a < b) ? 1 : 0;
+      alu.SLE: out_reg = (a <= b) ? 1 : 0;
+      alu.SEQ: out_reg = (a == b) ? 1 : 0;
+      alu.SNE: out_reg = (a != b) ? 1 : 0;
+      alu.SGT: out_reg = (a > b) ? 1 : 0;
+      alu.SGE: out_reg = (a >= b) ? 1 : 0;
+      alu.SRA: out_reg = a >>> b;
     endcase
   end
 

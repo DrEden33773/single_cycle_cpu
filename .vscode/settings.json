@@ -3,6 +3,7 @@
     "addi",
     "addiu",
     "addu",
+    "aluop",
     "andi",
     "bgez",
     "bgtz",
@@ -24,6 +25,7 @@
     "srav",
     "srlv",
     "subu",
-    "xori"
+    "xori",
+    "ZEXT"
   ]
 }

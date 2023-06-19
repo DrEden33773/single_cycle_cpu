@@ -3,7 +3,7 @@
 */
 
 
-`include "control/top_ctrl.v"
+`include "control/ctrl.v"
 `include "datapath/fetcher/fetcher.v"
 `include "datapath/splitter.v"
 `include "datapath/alu.v"
