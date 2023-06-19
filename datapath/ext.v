@@ -3,9 +3,10 @@
 */
 
 
+/// Support `LUI`
 module ext_16_to_32 (
-    input [15:0] imm16,
-    input ExtOp,
+    input  [15:0] imm16,
+    input  [ 1:0] ExtOp,
     output [31:0] ExtOut
 );
 
@@ -16,9 +17,11 @@ module ext_16_to_32 (
       /* default case */
       default: ext_out_reg = {32{imm16[15]}};
       /* zero extend */
-      0: ext_out_reg = {16'b0, imm16};
+      2'b00:   ext_out_reg = {16'b0, imm16};
       /* sign extend */
-      1: ext_out_reg = {{16{imm16[15]}}, imm16};
+      2'b01:   ext_out_reg = {{16{imm16[15]}}, imm16};
+      /* LUI */
+      2'b10:   ext_out_reg = {imm16, 16'b0};
     endcase
   end
 
@@ -26,6 +29,8 @@ module ext_16_to_32 (
 
 endmodule
 
+
+/// Haven't Support `LUI`
 module ext_16_to_30 (
     input [15:0] imm16,
     input ExtOp,

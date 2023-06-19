@@ -47,7 +47,7 @@ module fetcher (
 
   /* IM => Fetch.Addr(CurrPC).From(im_4k) */
   im_4k ImModule (
-      .addr(CurrPC),
+      .addr(CurrPC[9:0]),
       .dout(instruction)
   );
 

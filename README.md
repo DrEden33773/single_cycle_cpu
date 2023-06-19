@@ -124,7 +124,7 @@ $$
 | Branch   | 1: PC <- B_PC + sExt(imm) << 2, 0: won't branch |
 | Jump     | 1: PC <- {B_PC\[31:28\], imm << 2}, 0: won't jump |
 | Link     | 1: $31 <- B_PC + 4, 0: won't link |
-| ExtOp    | 1: sExt, 0: zExt |
+| ExtOp    | 2: LUI, 1: sExt, 0: zExt |
 | RType    | 1: R-type, 0: not R-type |
 
 ### 4-bit ALUOp
@@ -182,7 +182,7 @@ $$
 | andi        | 1     | 1      | 0      | 0        | 0     | 0      | 0    | 0    | 0     | 0     | 0010  |
 | ori         | 1     | 1      | 0      | 0        | 0     | 0      | 0    | 0    | 0     | 0     | 0011  |
 | xori        | 1     | 1      | 0      | 0        | 0     | 0      | 0    | 0    | 0     | 0     | 0100  |
-| lui         | 1     | x      | 0      | 0        | 0     | 0      | 0    | 0    | x     | 0     | xxxx  |
+| lui         | 1     | x      | 0      | 0        | 0     | 0      | 0    | 0    | 2     | 0     | xxxx  |
 | beq         | 0     | 0      | x      | 0        | 0     | 1      | 0    | 0    | 1     | 0     | 1011  |
 | bne         | 0     | 0      | x      | 0        | 0     | 1      | 0    | 0    | 1     | 0     | 1010  |
 | blez        | 0     | 1      | x      | 0        | 0     | 1      | 0    | 0    | 1     | 0     | 1001  |

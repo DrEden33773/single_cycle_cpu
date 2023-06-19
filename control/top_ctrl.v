@@ -20,13 +20,12 @@ module top_ctrl (
     output Branch,
     output Jump,
     output Link,
-    output ExtOp,
+    output [1:0] ExtOp,
     output RType,
     output JType,
     output IType,
     output [3:0] ALUOp
 );
-
   // >>> Split(instruction)
   wire [5:0] opcode = instruction[31:26];
   wire [5:0] funct = instruction[5:0];
@@ -36,8 +35,7 @@ module top_ctrl (
   assign JType = (opcode == 6'b000010) || (opcode == 6'b000011);
   assign IType = ~RType && ~JType;
 
-  // >>> RouteTo(SubCtrl)
-  always @(instruction) begin
-  end
+  // >>> Distinguish.ForEach(Instruction) @Via.(Programmable Net)
+
 
 endmodule
