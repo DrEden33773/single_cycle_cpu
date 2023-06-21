@@ -16,7 +16,8 @@ module fetcher (
     input BranchSignal,
     input BranchCondition,
     input Jump,
-    output [31:0] instruction
+    output [31:0] instruction,
+    output [31:0] B_PC
 );
 
   /* 32-bit PC */
@@ -33,6 +34,9 @@ module fetcher (
       .PC(PC),
       .CurrPC(CurrPC)
   );
+
+  // >>> Generate(B_PC)
+  assign B_PC = PC + 4;
 
   /* NPC => Get(NextPC) */
   npc NPCModule (

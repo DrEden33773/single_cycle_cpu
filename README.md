@@ -80,6 +80,8 @@ $$
 | jr          | 000000 | 001000 | `PC = $rs` |
 | jalr (rd = 31)       | 000000 | 001001 | `$31 = B_PC + 4; PC = $rs` |
 
+(Note: `jalr` could also be `PC = $rs; $31 = B_PC + 4`)
+
 ### I-type Inst
 
 | Instruction | Opcode | Description |

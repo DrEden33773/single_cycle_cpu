@@ -9,8 +9,8 @@ module npc (
     input [31:0] PC,
     input [15:0] imm16,
     input [25:0] target,
-    input BranchSignal,
-    input BranchCondition,
+    input BranchSignal,  // => ControlSignal.Branch
+    input BranchCondition,  // => ALU.out
     input Jump,
     output [31:0] NextPC
 );
