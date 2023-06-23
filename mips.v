@@ -32,14 +32,16 @@ module mips (
     input rst
 );
 
+  // 1. IF := Instruction Fetch
+
   wire [15:0] imm16;
   wire [25:0] target;
   wire BranchSignal;
   wire BranchCondition;
   wire Jump;
   wire [31:0] instruction;
+  wire [31:0] B_PC;
 
-  // FetcherModule
   fetcher FetcherModule (
       .clk(clk),
       .rst(rst),
@@ -48,8 +50,8 @@ module mips (
       .BranchSignal(BranchSignal),
       .BranchCondition(BranchCondition),
       .Jump(Jump),
-      .instruction(instruction)
+      .instruction(instruction),
+      .B_PC(B_PC)
   );
-
 
 endmodule
