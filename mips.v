@@ -28,8 +28,8 @@
 `include "tools/logic_expr.v"
 
 module mips (
-    input clk,  // clock
-    input rst   // reset
+    input clk,
+    input rst
 );
 
   wire [15:0] imm16;
