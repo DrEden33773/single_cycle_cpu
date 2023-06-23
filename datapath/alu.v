@@ -3,21 +3,21 @@
 
   | ALUOp | Description |
   | ----- | ----------- |
-  | 0000  | out <- in1 + in2 |
-  | 0001  | out <- in1 - in2 |
-  | 0010  | out <- in1 & in2 |
-  | 0011  | out <- in1 \| in2 |
-  | 0100  | out <- in1 ^ in2 |
-  | 0101  | out <- in1 << in2 |
-  | 0110  | out <- in1 >> in2 |
-  | 0111  | out <- ~(in1 \| in2) |
-  | 1000  | out <- in1 < in2 |
-  | 1001  | out <- in1 <= in2 |
-  | 1010  | out <- in1 != in2 |
-  | 1011  | out <- in1 == in2 |
-  | 1100  | out <- in1 > in2 |
-  | 1101  | out <- in1 >= in2 |
-  | 1110  | out <- in1 >>> in2 |
+  | 0000  | alu_out <- in1 + in2 |
+  | 0001  | alu_out <- in1 - in2 |
+  | 0010  | alu_out <- in1 & in2 |
+  | 0011  | alu_out <- in1 \| in2 |
+  | 0100  | alu_out <- in1 ^ in2 |
+  | 0101  | alu_out <- in1 << in2 |
+  | 0110  | alu_out <- in1 >> in2 |
+  | 0111  | alu_out <- ~(in1 \| in2) |
+  | 1000  | alu_out <- in1 < in2 |
+  | 1001  | alu_out <- in1 <= in2 |
+  | 1010  | alu_out <- in1 != in2 |
+  | 1011  | alu_out <- in1 == in2 |
+  | 1100  | alu_out <- in1 > in2 |
+  | 1101  | alu_out <- in1 >= in2 |
+  | 1110  | alu_out <- in1 >>> in2 |
 */
 
 
@@ -39,35 +39,41 @@
 
 
 module alu (
-    input  [31:0] a,
-    input  [31:0] b,
-    input  [ 3:0] ALUOp,
-    output [31:0] ALUOut
+    input [31:0] a,
+    input [31:0] b,
+    input [3:0] ALUOp,
+    output [31:0] ALUOut,
+    output BranchCondition
 );
 
-  reg [31:0] out_reg;
+  reg [31:0] alu_out;
+  reg branch_condition;
 
   always @(*) begin
     case (ALUOp)
-      default: out_reg = 0;
-      alu.ADD: out_reg = a + b;
-      alu.SUB: out_reg = a - b;
-      alu.AND: out_reg = a & b;
-      alu.OR:  out_reg = a | b;
-      alu.XOR: out_reg = a ^ b;
-      alu.SLL: out_reg = a << b;
-      alu.SRL: out_reg = a >> b;
-      alu.NOR: out_reg = ~(a | b);
-      alu.SLT: out_reg = (a < b) ? 1 : 0;
-      alu.SLE: out_reg = (a <= b) ? 1 : 0;
-      alu.SEQ: out_reg = (a == b) ? 1 : 0;
-      alu.SNE: out_reg = (a != b) ? 1 : 0;
-      alu.SGT: out_reg = (a > b) ? 1 : 0;
-      alu.SGE: out_reg = (a >= b) ? 1 : 0;
-      alu.SRA: out_reg = a >>> b;
+      /* default */
+      default: alu_out = 0;
+      /* algebra */
+      alu.ADD: alu_out = a + b;
+      alu.SUB: alu_out = a - b;
+      alu.AND: alu_out = a & b;
+      alu.OR:  alu_out = a | b;
+      alu.XOR: alu_out = a ^ b;
+      alu.SLL: alu_out = a << b;
+      alu.SRL: alu_out = a >> b;
+      alu.NOR: alu_out = ~(a | b);
+      alu.SRA: alu_out = a >>> b;
+      /* branch */
+      alu.SLT: branch_condition = (a < b) ? 1 : 0;
+      alu.SLE: branch_condition = (a <= b) ? 1 : 0;
+      alu.SEQ: branch_condition = (a == b) ? 1 : 0;
+      alu.SNE: branch_condition = (a != b) ? 1 : 0;
+      alu.SGT: branch_condition = (a > b) ? 1 : 0;
+      alu.SGE: branch_condition = (a >= b) ? 1 : 0;
     endcase
   end
 
-  assign ALUOut = out_reg;
+  assign ALUOut = alu_out;
+  assign BranchCondition = branch_condition;
 
 endmodule
