@@ -3,25 +3,6 @@
 */
 
 
-/* ALUOp Macros */
-`define ADD 4'b0000;
-`define SUB 4'b0001;
-`define AND 4'b0010;
-`define OR 4'b0011;
-`define XOR 4'b0100;
-`define SLL 4'b0101;
-`define SRL 4'b0110;
-`define NOR 4'b0111;
-`define SLT 4'b1000;
-`define SLE 4'b1001;
-`define SEQ 4'b1010;
-`define SNE 4'b1011;
-`define SGT 4'b1100;
-`define SGE 4'b1101;
-`define SRA 4'b1110;
-`define UNDEFINED 4'bxxxx;
-
-
 module alu_op_ctrl (
     input  [5:0] op,
     input  [4:0] rt,
@@ -29,6 +10,23 @@ module alu_op_ctrl (
     output [3:0] ALUOp
 );
 
+  parameter ADD = 4'b0000;
+  parameter SUB = 4'b0001;
+  parameter AND = 4'b0010;
+  parameter OR = 4'b0011;
+  parameter XOR = 4'b0100;
+  parameter SLL = 4'b0101;
+  parameter SRL = 4'b0110;
+  parameter NOR = 4'b0111;
+  parameter SLT = 4'b1000;
+  parameter SLE = 4'b1001;
+  parameter SEQ = 4'b1010;
+  parameter SNE = 4'b1011;
+  parameter SGT = 4'b1100;
+  parameter SGE = 4'b1101;
+  parameter SRA = 4'b1110;
+  parameter UNDEFINED = 4'bxxxx;
+  
   assign RType = (op == 6'b000000) && (funct != 6'b000000);
 
   // >>> Distinguish.ForEach(Instruction) @Via.(Programmable Net)
@@ -76,37 +74,37 @@ module alu_op_ctrl (
   reg [3:0] ALUOpReg;
   always @(*) begin
     if (_addu || _addiu || _lb || _lbu || _sb || _lw || _sw) begin
-      ALUOpReg = alu_op_ctrl.ADD;
+      ALUOpReg = ADD;
     end else if (_subu) begin
-      ALUOpReg = alu_op_ctrl.SUB;
+      ALUOpReg = SUB;
     end else if (_and || _andi) begin
-      ALUOpReg = alu_op_ctrl.AND;
+      ALUOpReg = AND;
     end else if (_or || _ori) begin
-      ALUOpReg = alu_op_ctrl.OR;
+      ALUOpReg = OR;
     end else if (_xor || _xori) begin
-      ALUOpReg = alu_op_ctrl.XOR;
+      ALUOpReg = XOR;
     end else if (_sll || _sllv) begin
-      ALUOpReg = alu_op_ctrl.SLL;
+      ALUOpReg = SLL;
     end else if (_srl || _srlv) begin
-      ALUOpReg = alu_op_ctrl.SRL;
+      ALUOpReg = SRL;
     end else if (_nor) begin
-      ALUOpReg = alu_op_ctrl.NOR;
+      ALUOpReg = NOR;
     end else if (_slt || _sltu || _bltz || _slti || _sltiu) begin
-      ALUOpReg = alu_op_ctrl.SLT;
+      ALUOpReg = SLT;
     end else if (_blez) begin
-      ALUOpReg = alu_op_ctrl.SLE;
+      ALUOpReg = SLE;
     end else if (_bne) begin
-      ALUOpReg = alu_op_ctrl.SNE;
+      ALUOpReg = SNE;
     end else if (_beq) begin
-      ALUOpReg = alu_op_ctrl.SEQ;
+      ALUOpReg = SEQ;
     end else if (_bgtz) begin
-      ALUOpReg = alu_op_ctrl.SGT;
+      ALUOpReg = SGT;
     end else if (_bgez) begin
-      ALUOpReg = alu_op_ctrl.SGE;
+      ALUOpReg = SGE;
     end else if (_sra || _srav) begin
-      ALUOpReg = alu_op_ctrl.SRA;
+      ALUOpReg = SRA;
     end else begin
-      ALUOpReg = alu_op_ctrl.UNDEFINED;
+      ALUOpReg = UNDEFINED;
     end
   end
   assign ALUOp = ALUOpReg;

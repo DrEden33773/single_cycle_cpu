@@ -109,7 +109,7 @@ module mips (
   );
 
   /* reg_file (aka. GPR) */
-  wire rw;
+  wire [ 4:0] rw;
   wire [31:0] busW;
   wire [31:0] busA;
   wire [31:0] busB;
@@ -118,7 +118,7 @@ module mips (
       .rt(rt),
       .rd(rd),
       .RegDst(RegDst),
-      .out(rw)
+      .rw(rw)
   );
 
   reg_file GPR (
@@ -132,8 +132,5 @@ module mips (
       .busA(busA),
       .busB(busB)
   );
-
-
-
 
 endmodule

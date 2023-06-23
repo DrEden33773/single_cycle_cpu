@@ -34,10 +34,10 @@ endmodule
 module ext_16_to_30 (
     input [15:0] imm16,
     input ExtOp,
-    output [31:0] ExtOut
+    output [29:0] ExtOut
 );
 
-  reg [31:0] ext_out_reg;
+  reg [29:0] ext_out_reg;
 
   always @(*) begin
     case (ExtOp)

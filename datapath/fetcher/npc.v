@@ -23,7 +23,7 @@ module npc (
   wire [29:0] imm30;
   ext_16_to_30 SignExtImm (
       .imm16 (imm16),
-      .ExtOp (1),
+      .ExtOp (1'b1),
       .ExtOut(imm30)
   );
 

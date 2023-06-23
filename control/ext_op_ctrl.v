@@ -3,18 +3,17 @@
 */
 
 
-/* ExtOp Macros */
-`define ZEXT = 2'b00
-`define SEXT = 2'b01
-`define LUI = 2'b10
-
-
 module ext_op_ctrl (
     input  [5:0] op,
     input  [4:0] rt,
     input  [5:0] funct,
     output [1:0] ExtOp
 );
+
+  parameter ZEXT = 2'b00;
+  parameter SEXT = 2'b01;
+  parameter LUI = 2'b10;
+  parameter UNDEFINED = 2'bxx;
 
   assign RType = (op == 6'b000000) && (funct != 6'b000000);
 
@@ -77,13 +76,13 @@ module ext_op_ctrl (
   reg [1:0] ExtOpReg;
   always @(*) begin
     if (zext_case) begin
-      ExtOpReg = ext_op_ctrl.ZEXT;
+      ExtOpReg = ZEXT;
     end else if (sext_case) begin
-      ExtOpReg = ext_op_ctrl.SEXT;
+      ExtOpReg = SEXT;
     end else if (lui_case) begin
-      ExtOpReg = ext_op_ctrl.LUI;
+      ExtOpReg = LUI;
     end else begin
-      ExtOpReg = 2'bxx;
+      ExtOpReg = UNDEFINED;
     end
   end
   assign ExtOp = ExtOpReg;
