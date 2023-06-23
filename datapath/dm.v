@@ -27,10 +27,10 @@ module dm_4k (
 
   always @(posedge clk) begin
     if (we) begin
-      dm[addr[11:2]] <= din;
+      dm[addr] <= din;
     end
   end
 
-  assign dout = dm[addr[11:2]];
+  assign dout = dm[addr];
 
 endmodule
