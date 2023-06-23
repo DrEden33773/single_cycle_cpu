@@ -67,15 +67,31 @@ module mux_RegDst (
     input [4:0] rt,  /* `0` */
     input [4:0] rd,  /* `1` */
     input RegDst,
-    output reg [4:0] rw
+    output reg [4:0] rt_rd
 );
 
   always @(*) begin
     case (RegDst)
-      default: rw = 0;
-      1'b0: rw = rt;
-      1'b1: rw = rd;
+      default: rt_rd = 0;
+      1'b0: rt_rd = rt;
+      1'b1: rt_rd = rd;
     endcase
   end
 
 endmodule
+
+module mux_RtRd_Rw_IfLinked (
+    input [4:0] rt_rd,  /* `0` */
+    input Link,
+    output reg [4:0] rw
+);
+
+  always @(*) begin
+    case (Link)
+      default: rw = 0;
+      1'b0: rw = rt_rd;
+      1'b1: rw = 5'b11111;
+    endcase
+  end
+
+endmodule  //mux

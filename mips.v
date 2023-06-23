@@ -94,28 +94,46 @@ module mips (
   );
 
   /* reg_file (aka. GPR) */
+  wire [ 4:0] rt_rd;
   wire [ 4:0] rw;
+  wire [31:0] busW_UnLinked;
+  wire [31:0] busW_Linked;
   wire [31:0] busW;
-  wire [31:0] busA;
-  wire [31:0] busB;
+  wire [31:0] busRS;
+  wire [31:0] busRT;
 
   mux_RegDst SelRtRd (
       .rt(rt),
       .rd(rd),
       .RegDst(RegDst),
+      .rt_rd(rt_rd)
+  );
+
+  mux_RtRd_Rw_IfLinked Sel_RtRd_Rw_IfLinked (
+      .rt_rd(rt_rd),
+      .Link(Link),
       .rw(rw)
+  );
+
+  assign busW_Linked = B_PC + 4;
+
+  mux2_1 Sel_busW_IfLinked (
+      .zero(busW_UnLinked),
+      .one (busW_Linked),
+      .sel (Link),
+      .out (busW)
   );
 
   reg_file GPR (
       .clk(clk),
       .rst(rst),
       .RegWr(RegWr),
-      .Rw(rw),
-      .Ra(rs),
-      .Rb(rt),
+      .rw(rw),
+      .ra(rs),
+      .rb(rt),
       .busW(busW),
-      .busA(busA),
-      .busB(busB)
+      .busA(busRS),
+      .busB(busRT)
   );
 
 
@@ -124,5 +142,55 @@ module mips (
   /* ext */
   wire [31:0] ext_imm32;
 
+  ext_16_to_32 ExtImm16 (
+      .imm16 (imm16),
+      .ExtOp (ExtOp),
+      .ExtOut(ext_imm32)
+  );
+
+  /* alu */
+  wire [31:0] ALUInA;
+  wire [31:0] ALUInB;
+  wire [31:0] ALUOut;
+
+  mux2_1 SelRtImm (
+      .zero(busRT),
+      .one (ext_imm32),
+      .sel (ALUSrc),
+      .out (ALUOut)
+  );
+
+  alu ALUModule (
+      .a(ALUInA),
+      .b(ALUInB),
+      .ALUOp(ALUOp),
+      .ALUOut(ALUOut),
+      .BranchCondition(BranchCondition)
+  );
+
+
+  /// 4. MEM := Memory Access
+
+  /* dm */
+  wire [31:0] dout;
+
+  dm_4k DataMemModule (
+      .clk (clk),
+      .we  (MemWr),
+      .addr(ALUOut[9:0]),
+      .din (busRT),
+      .dout(dout)
+  );
+
+
+  /// 5. WB := Write Back (to RegFile)
+
+  /* mux */
+  mux2_1 Sel_ALUOut_Dout (
+      .zero(ALUOut),
+      .one (dout),
+      .sel (MemToReg),
+      .out (busW_UnLinked)
+  );
 
 endmodule

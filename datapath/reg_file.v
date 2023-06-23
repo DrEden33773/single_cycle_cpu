@@ -11,11 +11,11 @@ module reg_file (
     /* write enable */
     input RegWr,
     /* write addr */
-    input [4:0] Rw,
+    input [4:0] rw,
     /* read addr A */
-    input [4:0] Ra,
+    input [4:0] ra,
     /* read addr B */
-    input [4:0] Rb,
+    input [4:0] rb,
     /* write data (from write addr) */
     input [31:0] busW,
     /* read data A (from read addr A) */
@@ -33,12 +33,12 @@ module reg_file (
     if (rst) begin
       for (i = 0; i < 32; i = i + 1) reges[i] <= 0;
     end else if (RegWr) begin
-      reges[Rw] <= busW;
+      reges[rw] <= busW;
       reges[0]  <= 0;  // `$zero` should always be `0` [[not_writeable]]
     end
   end
 
-  assign busA = reges[Ra];
-  assign busB = reges[Rb];
+  assign busA = reges[ra];
+  assign busB = reges[rb];
 
 endmodule
