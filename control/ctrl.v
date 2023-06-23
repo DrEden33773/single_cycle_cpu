@@ -8,10 +8,6 @@
 */
 
 
-/* import */
-`include "alu_op_ctrl.v"
-
-
 module ctrl (
     input [31:0] instruction,
     output RegWr,

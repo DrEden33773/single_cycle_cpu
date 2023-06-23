@@ -5,9 +5,6 @@
 */
 
 
-`include "npc.v"
-`include "pc.v"
-`include "../im.v"
 module fetcher (
     input clk,
     input rst,

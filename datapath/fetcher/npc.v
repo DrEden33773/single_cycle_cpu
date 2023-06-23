@@ -3,8 +3,6 @@
 */
 
 
-`include "../ext.v"
-`include "../../tools/mux.v"
 module npc (
     input [31:0] PC,
     input [15:0] imm16,

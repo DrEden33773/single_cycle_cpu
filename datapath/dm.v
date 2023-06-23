@@ -2,6 +2,7 @@
   DM := Data Memory
 */
 
+
 module dm_4k (
     clk,
     we,
